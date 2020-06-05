@@ -1,0 +1,27 @@
+# 路径相对于 pandoc 可执行文件的当前工作目录
+# 为了与 Markdown Preview Enhanced 相配合（通过 stdout）不配置输入输出文件
+# input-files:
+# output:
+
+filters:
+- pandoc-crossref
+- pandoc-citeproc
+
+html-math-method:
+  method: katex
+  url: "https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/"
+
+metadata:
+  bibliography: static/ref.bib
+  csl: static/chinese-gb7714-2015-numeric.csl
+  link-citations: false
+  reference-section-title: 参考文献
+  # 配置 pandoc-crossref 引用显示前缀
+  figPrefix: "图"
+  lstPrefix: "代码"
+  secPrefix: "章"
+  eqnPrefix: "式"
+  # 配置 pandoc-crossref 项目标题前缀
+  figureTitle: "图"
+  tableTitle: "表"
+  listingTitle: "代码"

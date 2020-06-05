@@ -1,0 +1,4 @@
+{
+    "markdown-preview-enhanced.usePandocParser": true,
+    "markdown-preview-enhanced.pandocArguments": "--defaults=pandoc.yaml"
+}
