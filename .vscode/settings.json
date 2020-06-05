@@ -1,4 +1,5 @@
 {
     "markdown-preview-enhanced.usePandocParser": true,
-    "markdown-preview-enhanced.pandocArguments": "--defaults=pandoc.yaml"
+    "markdown-preview-enhanced.pandocArguments": "--defaults=pandoc.yaml",
+    "latex-workshop.latex.autoBuild.run": "never"
 }

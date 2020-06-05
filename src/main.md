@@ -17,7 +17,7 @@ Pandoc 是一个标记语言转换工具，它支持非常多的语言之间的�
 
 # 利其器
 
-在用 Pandoc 进行文章写作时，通常为用到以下工具：
+在用 Pandoc 进行文章写作时，通常会用到以下工具：
 
 pandoc
 :   pandoc 本体
@@ -156,11 +156,9 @@ PANDOC       := pandoc
 DEFAULTS     := pandoc.yaml
 
 ifeq ($(OS), Windows_NT)
-CP           := powershell -noprofile -c cp
-MKDIR        := powershell -noprofile -c mkdir
+CP           := powershell -NoProfile -c cp
 else
 CP           := cp
-MKDIR        := mkdir
 endif
 
 # 配置默认目标
@@ -174,12 +172,7 @@ STATICS      := $(wildcard static/*)
 build/main.%: $(SOURCE) $(STATICS) copy_asset
 	$(PANDOC) --defaults $(DEFAULTS) --standalone -o $@ $(SOURCE)
 
-copy_asset: build/asset $(ASSET_COPIED)
-
-build/asset: build
-	$(MKDIR) $@
-build:
-	$(MKDIR) $@
+copy_asset: $(ASSET_COPIED)
 
 build/asset/%: src/asset/%
 	$(CP) $< $@
@@ -191,6 +184,18 @@ build/asset/%: src/asset/%
 
 当 latex 文档渲染出来后，进入 build 目录用 LaTeX 发行版进行编译。有些编译比较麻烦的，比如要建立目录、索引之类的，
 需要多次编译，还需要插入 makeindex 指令等，可以在 build/ 目录下编写一个新的 Makefile，反正也不长。
+
+由于当此仓库在推送时，没有文件的目录是不会被上传到远程的，因此我们要保留 build/ 下的目录结构，还需要 Hack 一下 .gitignore 文件 [@so_makefile_subdir]：
+
+```
+!/build/
+/build/*
+!/build/asset/
+/build/asset/*
+!/build/asset/.gitkeep
+```
+
+这样设置，build 目录下的所有其他文件都被忽略，只会保留 `/build/asset/.gitkeep` 文件以保留文本。
 
 # Markdown Preview Enhanced
 
