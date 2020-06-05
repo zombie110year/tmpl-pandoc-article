@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Zombie110year" />
+  <title>使用 Pandoc 进行文档编辑</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+   var mathElements = document.getElementsByClassName("math");
+   for (var i = 0; i < mathElements.length; i++) {
+    var texText = mathElements[i].firstChild;
+    if (mathElements[i].tagName == "SPAN") {
+     katex.render(texText.data, mathElements[i], {
+      displayMode: mathElements[i].classList.contains('display'),
+      throwOnError: false,
+      fleqn: false
+     });
+  }}});
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">使用 Pandoc 进行文档编辑</h1>
+<p class="author">Zombie110year</p>
+<p class="date">2020-06-04 00:00:00</p>
+</header>
+<nav id="TOC" role="doc-toc">
+
+</nav>
+<figure>
+<img src="src/asset/pandoc-logo.png" alt="" /><figcaption>pandoc caption</figcaption>
+</figure>
+<p>Pandoc 是一个标记语言转换工具，它支持非常多的语言之间的相互转换，并且，支持一种功能非常强大的 Markdown 解析功能 —— 即 Pandoc Markdown<span class="citation" data-cites="doc_pandoc_markdown"><sup>[1]</sup></span>。</p>
+<p>并且，Pandoc 提出 filter 协议，可以用 JSON 的方式与其他可执行文件交流数据，为标记语言的扩展解析功能提供了接口。 本文介绍利用 Pandoc 进行大型文档写作的方法。</p>
+<h1 id="利其器">利其器</h1>
+<p>在用 Pandoc 进行文章写作时，通常会用到以下工具：</p>
+<dl>
+<dt>pandoc</dt>
+<dd>pandoc 本体
+</dd>
+<dt>pandoc-crossref<span class="citation" data-cites="doc_pandoc_crossref"><sup>[2]</sup></span></dt>
+<dd>为 pandoc markdown 提供交叉引用功能。
+</dd>
+<dt>pandoc-citeproc</dt>
+<dd>一般跟随 pandoc 本体一同分发。提供解析参考文献引用的功能。
+</dd>
+<dt>vscode</dt>
+<dd>说它是目前地球最强的文本编辑器应该没人反对吧？
+</dd>
+<dt>shd101wyy.markdown-preview-enhanced</dt>
+<dd>vscode 与 atom 编辑器上最好用的 Markdown 实时渲染扩展。
+</dd>
+</dl>
+<p>其中，由于 pandoc-crossref 与 pandoc-citeproc 使用了相同的标记语法，因此在配置 filter 时， 需要让 crossref 在 citeproc 之前工作，否则会引起冲突。 并且 pandoc-crossref 与 pandoc 本体的版本高度耦合，甚至会出现兼容 2.9.2.1 但不兼容 2.9.2 的情况， 因此在安装时需要提前确认好本地 pandoc 的版本，到 GitHub Release 下载兼容的版本。</p>
+<h1 id="工作区布置">工作区布置</h1>
+<p>我们创建一个空的文件夹作为工作区，通常，我们希望工作区包含以下内容（用缩进代表一个文件夹）</p>
+<pre><code>Makefile                # 利用 Makefile 进行任务控制
+pandoc.yaml             # 利用 pandoc 的 --defaults 选项，
+                        # 将所有命令行参数写为 yaml 格式
+
+.vscode/
+    settings.json       # 针对当前项目进行一些布置
+
+src/                    # 将所有作者创造的内容保存在此文件夹下
+    main.md             # 一个入口文档，通常在此文档编辑 YAML 元数据头
+    chapter1.md         # 其他的章节内容
+    asset/              # 在文章中引用的图片、代码、或其他资源保存在此文件夹中
+
+static/                 # 不在文章中引用的资源文件
+    highlight.theme     # 语法高亮样式文件（在 pandoc.yaml 中使用）
+    template.*          # 使用的模板（在 pandoc.yaml 中配置）
+
+build/                  # 所有由程序生成的内容保存在此</code></pre>
+<h2 id="pandoc.yaml">pandoc.yaml</h2>
+<p>pandoc 可以将命令行参数写成 yaml 格式，其选项名的长形式和 yaml 中的键名一一对应，对于一些命令行表现和 yaml 键值对表现相异的部分，一般都遵循以下规律：</p>
+<dl>
+<dt>值的数目超过一的参数、选项在 yaml 中也可以用复数形式的键名 + yaml 列表来进行配置。</dt>
+<dd><pre><code>pandoc --filter pandoc-crossref --filter pandoc-citeproc
+
+filters:
+- pandoc-crossref
+- pandoc-citeproc</code></pre>
+</dd>
+<dt>起标志（flag）作用的选项，在 yaml 中的值类型应当为 bool。</dt>
+<dd><pre><code>pandoc --toc
+
+toc: true</code></pre>
+</dd>
+</dl>
+<p>一个典型的 yaml 文件通常有以下内容：</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># 路径相对于 pandoc 可执行文件的当前工作目录</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="co"># 为了与 Markdown Preview Enhanced 相配合（通过 stdout）不配置输入输出文件</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="co"># input-files:</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="co"># output:</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a></span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="fu">filters</span><span class="kw">:</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="kw">-</span><span class="at"> pandoc-crossref</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="kw">-</span><span class="at"> pandoc-citeproc</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a></span>
+<span id="cb4-10"><a href="#cb4-10"></a><span class="fu">html-math-method</span><span class="kw">:</span></span>
+<span id="cb4-11"><a href="#cb4-11"></a><span class="at">  </span><span class="fu">method</span><span class="kw">:</span><span class="at"> katex</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a><span class="at">  </span><span class="fu">url</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js&quot;</span></span>
+<span id="cb4-13"><a href="#cb4-13"></a></span>
+<span id="cb4-14"><a href="#cb4-14"></a><span class="fu">metadata</span><span class="kw">:</span></span>
+<span id="cb4-15"><a href="#cb4-15"></a><span class="at">  </span><span class="fu">bibliography</span><span class="kw">:</span><span class="at"> src/asset/ref.bib</span></span>
+<span id="cb4-16"><a href="#cb4-16"></a><span class="at">  </span><span class="fu">csl</span><span class="kw">:</span><span class="at"> chinese-gb7714-2015-numeric.csl</span></span>
+<span id="cb4-17"><a href="#cb4-17"></a><span class="at">  </span><span class="fu">link-citations</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span>
+<span id="cb4-18"><a href="#cb4-18"></a><span class="at">  </span><span class="fu">reference-section-title</span><span class="kw">:</span><span class="at"> 参考文献</span></span>
+<span id="cb4-19"><a href="#cb4-19"></a><span class="co">  # 配置 pandoc-crossref 引用显示前缀</span></span>
+<span id="cb4-20"><a href="#cb4-20"></a><span class="at">  </span><span class="fu">figPrefix</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;图&quot;</span></span>
+<span id="cb4-21"><a href="#cb4-21"></a><span class="at">  </span><span class="fu">lstPrefix</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;代码&quot;</span></span>
+<span id="cb4-22"><a href="#cb4-22"></a><span class="at">  </span><span class="fu">secPrefix</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;章&quot;</span></span>
+<span id="cb4-23"><a href="#cb4-23"></a><span class="at">  </span><span class="fu">eqnPrefix</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;式&quot;</span></span>
+<span id="cb4-24"><a href="#cb4-24"></a><span class="st">  # 配置 pandoc-crossref 项目标题前缀</span></span>
+<span id="cb4-25"><a href="#cb4-25"></a><span class="st">  figureTitle: &quot;</span><span class="er">图&quot;</span></span>
+<span id="cb4-26"><a href="#cb4-26"></a><span class="at">  </span><span class="fu">tableTitle</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;表&quot;</span></span>
+<span id="cb4-27"><a href="#cb4-27"></a><span class="at">  </span><span class="fu">listingTitle</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;代码&quot;</span></span></code></pre></div>
+<p>在转换文档时，不再传递过长的命令行参数，而使用</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a><span class="ex">pandoc</span> --defaults=pandoc.yaml --standalone -o <span class="op">&lt;</span>output<span class="op">&gt;</span></span></code></pre></div>
+<p>两个参数代替。如上例所述，为了方便配置 MPE（Markdown Preview Enhanced） 的渲染，没有指定输出文件，而是在转换时才通过 -o 参数来指定，这样，就可以很方便地配置 MPE 使用 pandoc 来代替 markdown-it 了。</p>
+<p>另外，在这里可以看到一个 <code>metadata</code> 键，这个键对应 <code>--metadata=KEY:VALUE</code> 命令行参数。对于 Markdown 来说，它指定的就是一个文档的 YAML 头。</p>
+<p>为了在编辑由多个文件组成的项目时，MPE 能够独立预览单个文件，不至于让 pandoc 每次都全量渲染，没有指定 input-files。 当然，可以指定并注释，在最后生成结果时再取消注释并调用 pandoc 渲染。</p>
+<h2 id="main.md">main.md</h2>
+<p>通常，我们把每个文件都可能用到的元数据写在 pandoc.yaml 文件里，把整个项目只使用一次的元数据以 YAML header 的形式写在入口 Markdown 文件的头部:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb6-1"><a href="#cb6-1"></a><span class="pp">---</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> 文档的标题</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="fu">author</span><span class="kw">:</span><span class="at"> 作者</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="fu">date</span><span class="kw">:</span><span class="at"> 1900-01-01 00:00:00</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a><span class="fu">toc-depth</span><span class="kw">:</span><span class="at"> </span><span class="dv">2</span></span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="fu">number-sections</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb6-8"><a href="#cb6-8"></a><span class="co">...</span></span></code></pre></div>
+<h1 id="makefile-调用">Makefile 调用</h1>
+<p>在根目录的 Makefile 里，配置：</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># Markdown 源文件</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="dt">SOURCE       </span><span class="ch">:=</span><span class="st"> </span><span class="ch">$(</span><span class="kw">wildcard</span><span class="st"> src/*.md</span><span class="ch">)</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a></span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="co"># 配置 pandoc 可执行文件的路径，默认使用 PATH 里的第一个</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="dt">PANDOC       </span><span class="ch">:=</span><span class="st"> pandoc</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a><span class="dt">DEFAULTS     </span><span class="ch">:=</span><span class="st"> pandoc.yaml</span></span>
+<span id="cb7-7"><a href="#cb7-7"></a></span>
+<span id="cb7-8"><a href="#cb7-8"></a><span class="cf">ifeq</span> (<span class="ch">$(</span><span class="dt">OS</span><span class="ch">)</span>, Windows_NT)</span>
+<span id="cb7-9"><a href="#cb7-9"></a><span class="dt">CP           </span><span class="ch">:=</span><span class="st"> powershell -NoProfile -c cp</span></span>
+<span id="cb7-10"><a href="#cb7-10"></a><span class="cf">else</span></span>
+<span id="cb7-11"><a href="#cb7-11"></a><span class="dt">CP           </span><span class="ch">:=</span><span class="st"> cp</span></span>
+<span id="cb7-12"><a href="#cb7-12"></a><span class="cf">endif</span></span>
+<span id="cb7-13"><a href="#cb7-13"></a></span>
+<span id="cb7-14"><a href="#cb7-14"></a><span class="co"># 配置默认目标</span></span>
+<span id="cb7-15"><a href="#cb7-15"></a><span class="dv">out:</span><span class="dt"> build/main.tex</span></span>
+<span id="cb7-16"><a href="#cb7-16"></a></span>
+<span id="cb7-17"><a href="#cb7-17"></a><span class="co"># 资源文件</span></span>
+<span id="cb7-18"><a href="#cb7-18"></a><span class="dt">ASSET        </span><span class="ch">:=</span><span class="st"> </span><span class="ch">$(</span><span class="kw">wildcard</span><span class="st"> src/asset/*</span><span class="ch">)</span></span>
+<span id="cb7-19"><a href="#cb7-19"></a><span class="dt">ASSET_COPIED </span><span class="ch">:=</span><span class="st"> </span><span class="ch">$(</span><span class="kw">subst</span><span class="st"> src/</span><span class="kw">,</span><span class="st">build/</span><span class="kw">,</span><span class="ch">$(</span><span class="dt">ASSET</span><span class="ch">))</span></span>
+<span id="cb7-20"><a href="#cb7-20"></a><span class="dt">STATICS      </span><span class="ch">:=</span><span class="st"> </span><span class="ch">$(</span><span class="kw">wildcard</span><span class="st"> static/*</span><span class="ch">)</span></span>
+<span id="cb7-21"><a href="#cb7-21"></a></span>
+<span id="cb7-22"><a href="#cb7-22"></a><span class="dv">build/main.%:</span><span class="dt"> </span><span class="ch">$(</span><span class="dt">SOURCE</span><span class="ch">)</span><span class="dt"> </span><span class="ch">$(</span><span class="dt">STATICS</span><span class="ch">)</span><span class="dt"> copy_asset</span></span>
+<span id="cb7-23"><a href="#cb7-23"></a>    <span class="ch">$(</span><span class="dt">PANDOC</span><span class="ch">)</span> --defaults <span class="ch">$(</span><span class="dt">DEFAULTS</span><span class="ch">)</span> --standalone -o <span class="ch">$@</span> <span class="ch">$(</span><span class="dt">SOURCE</span><span class="ch">)</span></span>
+<span id="cb7-24"><a href="#cb7-24"></a></span>
+<span id="cb7-25"><a href="#cb7-25"></a><span class="dv">copy_asset:</span><span class="dt"> </span><span class="ch">$(</span><span class="dt">ASSET_COPIED</span><span class="ch">)</span></span>
+<span id="cb7-26"><a href="#cb7-26"></a></span>
+<span id="cb7-27"><a href="#cb7-27"></a><span class="dv">build/asset/%:</span><span class="dt"> src/asset/%</span></span>
+<span id="cb7-28"><a href="#cb7-28"></a>    <span class="ch">$(</span><span class="dt">CP</span><span class="ch">)</span> <span class="ch">$&lt;</span> <span class="ch">$@</span></span>
+<span id="cb7-29"><a href="#cb7-29"></a></span>
+<span id="cb7-30"><a href="#cb7-30"></a><span class="ot">.PHONY:</span><span class="dt"> out copy_asset</span></span></code></pre></div>
+<p>（复制时记得把前缀空格换成制表符！）</p>
+<p>当 latex 文档渲染出来后，进入 build 目录用 LaTeX 发行版进行编译。有些编译比较麻烦的，比如要建立目录、索引之类的， 需要多次编译，还需要插入 makeindex 指令等，可以在 build/ 目录下编写一个新的 Makefile，反正也不长。</p>
+<p>由于当此仓库在推送时，没有文件的目录是不会被上传到远程的，因此我们要保留 build/ 下的目录结构，还需要 Hack 一下 .gitignore 文件<span class="citation" data-cites="so_makefile_subdir"><sup>[3]</sup></span>：</p>
+<pre><code>!/build/
+/build/*
+!/build/asset/
+/build/asset/*
+!/build/asset/.gitkeep</code></pre>
+<p>这样设置，build 目录下的所有其他文件都被忽略，只会保留 <code>/build/asset/.gitkeep</code> 文件以保留文本。</p>
+<h1 id="markdown-preview-enhanced">Markdown Preview Enhanced</h1>
+<p>在 vscode 工作区的配置文件中添加：</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">{</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>    <span class="dt">&quot;markdown-preview-enhanced.usePandocParser&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a>    <span class="dt">&quot;markdown-preview-enhanced.pandocArguments&quot;</span><span class="fu">:</span> <span class="st">&quot;--defaults=pandoc.yaml&quot;</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="fu">}</span></span></code></pre></div>
+<h1 id="pandoc-的重要扩展语法">Pandoc 的重要扩展语法</h1>
+<p>介绍 pandoc 所扩展的最有诱惑力的语法。</p>
+<h2 id="隐式标题引用">隐式标题引用</h2>
+<p>当启用 <code>implicit_header_references</code> 扩展时，可以用 <code>[]</code> 包括标题原文创建一个指向标题的引用。</p>
+<pre><code># 标题文本
+
+[标题文本]</code></pre>
+<h2 id="定义列表">定义列表</h2>
+<pre><code>术语
+:   定义</code></pre>
+<h2 id="交叉引用与引文引用">交叉引用与引文引用</h2>
+<p>这其实是 pandoc-crossref 和 pandoc-citeproc 提供的语法：</p>
+<pre><code>Blah blah [参阅 @doe99， 33-35 页; 以及 @smith04, 第 1 章].
+
+Blah blah [@doe99，33-35、38-39 页和 *passim*].
+
+Blah blah [@smith04; @doe99].</code></pre>
+<p>当文档中存在无法指定具体位置的引用时，在 YAML 头中添加：</p>
+<pre><code>nocite: |
+    @key</code></pre>
+<p>这样，引文仍然会包含在引文目录中。</p>
+<p>更多的注意事项参考 pandoc-citeproc<span class="citation" data-cites="doc_pandoc_citeproc"><sup>[4]</sup></span> 和 pandoc-crossref<span class="citation" data-cites="doc_pandoc_crossref"><sup>[2]</sup></span> 的文档。</p>
+<h2 id="属性标注">属性标注</h2>
+<p>在任意 Markdown 元素后用 <code>{attr }</code> 的格式添加属性，语法类似 HTML：</p>
+<pre><code>    ![image](foo.jpg){#id .class width=30 height=20px}
+
+    ~~~~ {#mycode .haskell .numberLines startFrom=&quot;100&quot;}
+    qsort []     = []
+    qsort (x:xs) = qsort (filter (&lt; x) xs) ++ [x] ++
+                qsort (filter (&gt;= x) xs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    ::: {.warning}
+    警告段落！
+    :::</code></pre>
+<h2 id="通用原始属性">通用原始属性</h2>
+<p>在一个栅栏式代码块中使用属性 <code>{=format}</code> 可以指定当输出格式为 format 时将代码块中内容作为原始输出内容：</p>
+<pre><code>    ``{=openxml}
+    &lt;w:p&gt;
+    &lt;w:r&gt;
+        &lt;w:br w:type=&quot;page&quot;/&gt;
+    &lt;/w:r&gt;
+    &lt;/w:p&gt;
+    ``</code></pre>
+<h1 id="pandoc-template">Pandoc Template</h1>
+<ul class="task-list">
+<li><input type="checkbox" disabled="" />
+todo</li>
+</ul>
+<h1 id="data-dir-机制">data dir 机制</h1>
+<ul class="task-list">
+<li><input type="checkbox" disabled="" />
+todo</li>
+</ul>
+<h1 class="unnumbered" id="bibliography">参考文献</h1>
+<div id="refs" class="references" role="doc-bibliography">
+<div id="ref-doc_pandoc_markdown">
+<p>[1] Pandoc 用户指南：Pandoc Markdown[Z]<a href="https://pandoc.org/MANUAL.html#pandocs-markdown">https://pandoc.org/MANUAL.html#pandocs-markdown</a>. </p>
+</div>
+<div id="ref-doc_pandoc_crossref">
+<p>[2] LIERDAKIL. Pandoc Crossref 文档[Z]<a href="http://lierdakil.github.io/pandoc-crossref/">http://lierdakil.github.io/pandoc-crossref/</a>. </p>
+</div>
+<div id="ref-so_makefile_subdir">
+<p>[3].gitignore exclude folder but include specific subfolder[Z]<a href="https://stackoverflow.com/questions/5533050/gitignore-exclude-folder-but-include-specific-subfolder">https://stackoverflow.com/questions/5533050/gitignore-exclude-folder-but-include-specific-subfolder</a>. </p>
+</div>
+<div id="ref-doc_pandoc_citeproc">
+<p>[4] Pandoc Citeproc 文档[Z]<a href="https://github.com/jgm/pandoc-citeproc/blob/master/man/pandoc-citeproc.1.md">https://github.com/jgm/pandoc-citeproc/blob/master/man/pandoc-citeproc.1.md</a>. </p>
+</div>
+</div>
+</body>
+</html>
