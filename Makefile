@@ -6,11 +6,9 @@ PANDOC       := pandoc
 DEFAULTS     := pandoc.yaml
 
 ifeq ($(OS), Windows_NT)
-CP           := powershell -noprofile -c cp
-MKDIR        := powershell -noprofile -c mkdir
+CP           := powershell -NoProfile -c cp
 else
 CP           := cp
-MKDIR        := mkdir
 endif
 
 # 配置默认目标
@@ -24,12 +22,7 @@ STATICS      := $(wildcard static/*)
 build/main.%: $(SOURCE) $(STATICS) copy_asset
 	$(PANDOC) --defaults $(DEFAULTS) --standalone -o $@ $(SOURCE)
 
-copy_asset: build/asset $(ASSET_COPIED)
-
-build/asset: build
-	$(MKDIR) $@
-build:
-	$(MKDIR) $@
+copy_asset: $(ASSET_COPIED)
 
 build/asset/%: src/asset/%
 	$(CP) $< $@
