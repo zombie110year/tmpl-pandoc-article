@@ -204,7 +204,7 @@ build/asset/%: src/asset/%
 ```json
 {
     "markdown-preview-enhanced.usePandocParser": true,
-    "markdown-preview-enhanced.pandocArguments": "--defaults=pandoc.yaml"
+    "markdown-preview-enhanced.pandocArguments": ["--defaults=pandoc.yaml"]
 }
 ```
 
